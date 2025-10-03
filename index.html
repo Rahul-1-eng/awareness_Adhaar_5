@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Confusion Hunter - Understanding Aadhaar Linking vs DBT Seeding for scholarship payments">
+    <title>Confusion Hunter - Aadhaar DBT Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+                <span class="brand-text">Confusion Hunter</span>
+            </div>
+            <div class="accessibility-controls" style="display:flex;gap:1em;align-items:center;justify-content:flex-end;padding:0.5em 1em;background:#f3f4f6;">
+                <button onclick="toggleContrast()" style="padding:0.5em 1em;border-radius:6px;border:none;background:#111827;color:#fff;">High Contrast</button>
+                <label for="fontSizeSelect" style="font-size:0.95em;">Font Size:</label>
+                <select id="fontSizeSelect" onchange="changeFontSize()" style="padding:0.3em 0.7em;border-radius:6px;">
+                    <option value="16">Normal</option>
+                    <option value="18">Large</option>
+                    <option value="20">Extra Large</option>
+                </select>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="nav-menu desktop-menu">
+                <!-- Navigation links restored -->
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('home')">Home</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('difference')">What's the Difference?</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('guide')">Guide</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('check')">Check DBT Status</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('video')">Video Resources</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('resources')">Resources</a>
+                <a href="javascript:void(0)" class="nav-link hidden" id="adminNavLink" onclick="showPage('admin')">Admin</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('home')">Home</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('difference')">What's the Difference?</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('guide')">Guide</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('check')">Check DBT Status</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('video')">Video Resources</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showPage('resources')">Resources</a>
+                <a href="javascript:void(0)" class="nav-link hidden" id="adminNavLink" onclick="showPage('admin')">Admin</a>
+                
+                <div class="language-selector">
+                    <svg class="lang-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <select id="languageSelect" class="lang-select" onchange="changeLanguage()">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="bn">বাংলা</option>
+                        <option value="gu">ગુજરાતી</option>
+                        <option value="mr">मराठी</option>
+                        <option value="ta">தமிழ்</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="kn">ಕನ್ನಡ</option>
+                        <option value="ml">മലയാളം</option>
+                        <option value="pa">ਪੰਜਾਬੀ</option>
+                    </select>
+                </div>
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="#" class="mobile-link" onclick="showPage('home'); toggleMobileMenu()">Home</a>
+            <a href="#" class="mobile-link" onclick="showPage('difference'); toggleMobileMenu()">What's the Difference?</a>
+            <a href="#" class="mobile-link" onclick="showPage('guide'); toggleMobileMenu()">Step-by-Step Guide</a>
+            <a href="#" class="mobile-link" onclick="showPage('check'); toggleMobileMenu()">Check DBT Status</a>
+            <a href="#" class="mobile-link" onclick="showPage('video'); toggleMobileMenu()">Video Resources</a>
+            <a href="#" class="mobile-link" onclick="showPage('resources'); toggleMobileMenu()">Resources</a>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="homePage" class="page active">
+    <!-- Home page is active by default -->
+        <div class="hero-section" style="background:linear-gradient(120deg,#e0e7ff 0%,#f0fdfa 40%,#fef9c3 100%);padding:3.5em 0 2.5em 0;box-shadow:0 4px 32px #a5b4fc33;position:relative;overflow:hidden;">
+            <!-- Animated shapes -->
+            <div style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;">
+                <svg style="position:absolute;top:10%;left:5%;width:80px;height:80px;opacity:0.18;" viewBox="0 0 80 80"><circle cx="40" cy="40" r="40" fill="#bae6fd"/></svg>
+                <svg style="position:absolute;bottom:8%;right:8%;width:100px;height:100px;opacity:0.15;" viewBox="0 0 100 100"><rect width="100" height="100" rx="30" fill="#f3e8ff"/></svg>
+                <svg style="position:absolute;top:50%;right:12%;width:60px;height:60px;opacity:0.13;" viewBox="0 0 60 60"><polygon points="30,0 60,60 0,60" fill="#bbf7d0"/></svg>
+            </div>
+            <div class="container" style="max-width:900px;margin:auto;position:relative;z-index:1;">
+                <div class="container page-container" style="text-align:center;">
+                    <h1 class="page-title" style="font-size:2.7em;font-weight:900;color:#2563eb;letter-spacing:-1px;text-shadow:0 2px 12px #a5b4fc33;">Confusion Hunter</h1>
+                    <p class="feature-desc" style="font-size:1.35em;color:#334155;margin-top:0.7em;text-shadow:0 1px 8px #e0e7ff66;">Your one-stop platform for <span style="color:#0ea5e9;font-weight:700;">Aadhaar Linking</span>, <span style="color:#16a34a;font-weight:700;">DBT Seeding</span>, and <span style="color:#eab308;font-weight:700;">Scholarship Payments</span>.</p>
+                    <div style="margin:2.8em 0 2em 0;display:flex;flex-wrap:wrap;gap:2.2em;justify-content:center;">
+                        <div class="feature-card" style="background:linear-gradient(120deg,#e0f2fe 60%,#bae6fd 100%);padding:2.2em 2em 1.7em 2em;border-radius:18px;box-shadow:0 6px 24px #bae6fd44;min-width:220px;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;position:relative;overflow:hidden;">
+                            <svg style="width:2.7em;height:2.7em;margin-bottom:0.7em;" fill="none" stroke="#0ea5e9" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#e0f2fe"/><path d="M8 12l2 2 4-4" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <div style="font-size:1.15em;font-weight:700;color:#0ea5e9;">Step-by-Step Guide</div>
+                            <div style="font-size:1em;color:#334155;margin-top:0.5em;">Interactive checklist for DBT seeding</div>
+                        </div>
+                        <div class="feature-card" style="background:linear-gradient(120deg,#fef9c3 60%,#fde68a 100%);padding:2.2em 2em 1.7em 2em;border-radius:18px;box-shadow:0 6px 24px #fde68a44;min-width:220px;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;position:relative;overflow:hidden;">
+                            <svg style="width:2.7em;height:2.7em;margin-bottom:0.7em;" fill="none" stroke="#eab308" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#fef9c3"/><path d="M12 8v4l3 3" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <div style="font-size:1.15em;font-weight:700;color:#eab308;">DBT Status Simulator</div>
+                            <div style="font-size:1em;color:#334155;margin-top:0.5em;">Practice checking your DBT status</div>
+                        </div>
+                        <div class="feature-card" style="background:linear-gradient(120deg,#dcfce7 60%,#bbf7d0 100%);padding:2.2em 2em 1.7em 2em;border-radius:18px;box-shadow:0 6px 24px #bbf7d044;min-width:220px;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;position:relative;overflow:hidden;">
+                            <svg style="width:2.7em;height:2.7em;margin-bottom:0.7em;" fill="none" stroke="#16a34a" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#dcfce7"/><path d="M9 12l2 2 4-4" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <div style="font-size:1.15em;font-weight:700;color:#16a34a;">FAQ & Resources</div>
+                            <div style="font-size:1em;color:#334155;margin-top:0.5em;">Instant answers and official guides</div>
+                        </div>
+                        <div class="feature-card" style="background:linear-gradient(120deg,#f3e8ff 60%,#e9d5ff 100%);padding:2.2em 2em 1.7em 2em;border-radius:18px;box-shadow:0 6px 24px #e9d5ff44;min-width:220px;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;position:relative;overflow:hidden;">
+                            <svg style="width:2.7em;height:2.7em;margin-bottom:0.7em;" fill="none" stroke="#9333ea" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#f3e8ff"/><path d="M8 12h.01M12 12h.01M16 12h.01" stroke="#9333ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <div style="font-size:1.15em;font-weight:700;color:#9333ea;">Quiz & Document Upload</div>
+                            <div style="font-size:1em;color:#334155;margin-top:0.5em;">Test your knowledge and upload docs (demo)</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:2.2em;">
+                        <button onclick="showPage('guide')" class="btn btn-primary" style="font-size:1.15em;padding:0.9em 2.2em;border-radius:10px;box-shadow:0 2px 12px #2563eb33;background:linear-gradient(90deg,#2563eb 60%,#0ea5e9 100%);color:#fff;font-weight:700;">
+                            Get Started
+                            <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:1.2em;height:1.2em;margin-left:0.5em;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Difference Page -->
+    <div id="differencePage" class="page">
+    <!-- Difference page content is present -->
+        <div class="container page-container" style="max-width:900px;margin:auto;position:relative;overflow:hidden;background:linear-gradient(120deg,#fee2e2 0%,#fef9c3 60%,#bbf7d0 100%);padding:3em 0 2em 0;box-shadow:0 4px 32px #fecaca33;">
+            <!-- Animated shapes -->
+            <div style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;">
+                <svg style="position:absolute;top:8%;left:6%;width:70px;height:70px;opacity:0.15;" viewBox="0 0 70 70"><circle cx="35" cy="35" r="35" fill="#fecaca"/></svg>
+                <svg style="position:absolute;bottom:10%;right:10%;width:90px;height:90px;opacity:0.13;" viewBox="0 0 90 90"><rect width="90" height="90" rx="24" fill="#bbf7d0"/></svg>
+                <svg style="position:absolute;top:55%;right:15%;width:50px;height:50px;opacity:0.12;" viewBox="0 0 50 50"><polygon points="25,0 50,50 0,50" fill="#fef9c3"/></svg>
+            </div>
+            <div style="position:relative;z-index:1;">
+                <h1 class="page-title" data-i18n="difference.title" style="font-size:2.3em;font-weight:900;color:#dc2626;text-align:center;text-shadow:0 2px 12px #fecaca33;">What's the Difference?</h1>
+                <p style="text-align:center;font-size:1.18em;color:#334155;margin-bottom:2em;text-shadow:0 1px 8px #fee2e266;">Understand the key difference between <span style="color:#dc2626;font-weight:700;">Aadhaar Linking</span> and <span style="color:#16a34a;font-weight:700;">DBT Seeding</span> for scholarship payments.</p>
+                <div class="comparison-grid" style="display:flex;gap:2em;justify-content:center;flex-wrap:wrap;">
+                    <!-- Aadhaar Linking -->
+                    <div class="comparison-card red" style="background:linear-gradient(120deg,#fee2e2 60%,#fecaca 100%);padding:2.2em 1.7em;border-radius:18px;box-shadow:0 6px 24px #fecaca44;min-width:260px;max-width:340px;transition:transform 0.2s,box-shadow 0.2s;position:relative;overflow:hidden;">
+                        <svg style="position:absolute;top:-18px;right:-18px;width:48px;height:48px;opacity:0.12;" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#dc2626"/></svg>
+                        <div class="comparison-icon-wrapper red" style="text-align:center;">
+                            <svg class="comparison-icon" style="width:2.7em;height:2.7em;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#fecaca"/><path d="M8 12h8M12 8v8" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <h2 class="comparison-title" data-i18n="difference.aadhaarLink" style="color:#dc2626;font-size:1.28em;font-weight:700;text-align:center;margin-top:0.7em;">Aadhaar Linking</h2>
+                        <p class="comparison-desc" data-i18n="difference.aadhaarLinkDesc" style="text-align:center;color:#b91c1c;margin-bottom:1em;">Just connecting your Aadhaar number to your bank account</p>
+                        <ul class="comparison-list" style="color:#dc2626;font-size:1.07em;">
+                            <li><span class="bullet red">•</span> Needed for KYC</li>
+                            <li><span class="bullet red">•</span> Does <strong>not</strong> enable DBT payments</li>
+                            <li><span class="bullet red">•</span> Most students have this only</li>
+                        </ul>
+                    </div>
+                    <!-- DBT Seeding -->
+                    <div class="comparison-card green" style="background:linear-gradient(120deg,#bbf7d0 60%,#dcfce7 100%);padding:2.2em 1.7em;border-radius:18px;box-shadow:0 6px 24px #bbf7d044;min-width:260px;max-width:340px;transition:transform 0.2s,box-shadow 0.2s;position:relative;overflow:hidden;">
+                        <svg style="position:absolute;bottom:-18px;left:-18px;width:48px;height:48px;opacity:0.12;" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#16a34a"/></svg>
+                        <div class="comparison-icon-wrapper green" style="text-align:center;">
+                            <svg class="comparison-icon" style="width:2.7em;height:2.7em;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#bbf7d0"/><path d="M9 12l2 2 4-4" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <h2 class="comparison-title" data-i18n="difference.dbtSeed" style="color:#16a34a;font-size:1.28em;font-weight:700;text-align:center;margin-top:0.7em;">DBT Seeding (Aadhaar Enabled)</h2>
+                        <p class="comparison-desc" data-i18n="difference.dbtSeedDesc" style="text-align:center;color:#059669;margin-bottom:1em;">Making your account ready to receive government benefits</p>
+                        <ul class="comparison-list" style="color:#16a34a;font-size:1.07em;">
+                            <li><span class="bullet green">•</span> Needed for DBT payments</li>
+                            <li><span class="bullet green">•</span> Must be requested at bank</li>
+                            <li><span class="bullet green">•</span> Enables scholarships & subsidies</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="alert-box" style="margin-top:2em;background:linear-gradient(90deg,#fef9c3 60%,#fde68a 100%);border-left:6px solid #eab308;padding:1.2em 1.5em;border-radius:14px;box-shadow:0 2px 12px #fde68a44;display:flex;align-items:center;gap:1em;">
+                    <svg class="alert-icon" style="width:2em;height:2em;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <div>
+                        <p class="alert-title" data-i18n="difference.key" style="color:#eab308;font-weight:700;font-size:1.13em;">Key Point: Linking ≠ Seeding!</p>
+                        <p class="alert-text" style="color:#b45309;">Most students have linking but are missing seeding. That's why scholarships fail!</p>
+                    </div>
+                </div>
+                <div class="text-center" style="margin-top:2em;">
+                    <button onclick="showPage('guide')" class="btn btn-primary" style="font-size:1.13em;padding:0.9em 2.2em;border-radius:10px;box-shadow:0 2px 12px #2563eb33;background:linear-gradient(90deg,#2563eb 60%,#0ea5e9 100%);color:#fff;font-weight:700;">
+                        Learn How to Enable Seeding
+                        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:1.2em;height:1.2em;margin-left:0.5em;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Guide Page -->
+    <div id="guidePage" class="page">
+    <!-- Guide page content is present -->
+        <div class="container page-container-narrow">
+            <h1 class="page-title" data-i18n="guide.title">Step-by-Step Seeding Guide</h1>
+            <div class="guide-intro" style="margin-bottom:2rem;font-size:1.15em;color:#334155;background:#e0e7ff;padding:1.2em 1.5em;border-radius:1em;box-shadow:0 2px 8px #a5b4fc22;">
+                Welcome! This interactive guide will help you complete every step needed for DBT seeding and scholarship payments. Track your progress, get personalized tips, search FAQs, read success stories, take a quiz, and practice document upload—all in one place.
+            </div>
+            <div class="steps-container">
+                <!-- Step 1: Progress Tracker -->
+                <div class="step-card">
+                    <div class="step-icon-wrapper blue">
+                        <svg class="step-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#dbeafe"/><path d="M8 12l2 2 4-4" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">Track Your Progress</h3>
+                        <div class="progress-steps" style="display:flex;flex-direction:column;gap:1em;">
+                            <div class="progress-step"><input type="checkbox" id="gstep1" onchange="updateProgress()"> <label for="gstep1">Visit your bank branch</label></div>
+                            <div class="progress-step"><input type="checkbox" id="gstep2" onchange="updateProgress()"> <label for="gstep2">Request DBT/Aadhaar seeding</label></div>
+                            <div class="progress-step"><input type="checkbox" id="gstep3" onchange="updateProgress()"> <label for="gstep3">Submit required documents</label></div>
+                            <div class="progress-step"><input type="checkbox" id="gstep4" onchange="updateProgress()"> <label for="gstep4">Receive confirmation SMS/email</label></div>
+                            <div class="progress-step"><input type="checkbox" id="gstep5" onchange="updateProgress()"> <label for="gstep5">Check DBT status online</label></div>
+                        </div>
+                        <div id="guideProgressSummary" style="margin-top:1em;font-weight:500;color:#2563eb;"></div>
+                    </div>
+                </div>
+                <!-- Step 2: Personalized Tips -->
+                <div class="step-card">
+                    <div class="step-icon-wrapper green">
+                        <svg class="step-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#dcfce7"/><path d="M12 8v4l3 3" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">Get Personalized Tips</h3>
+                        <div id="guidePersonalizedTips" style="font-size:1.05em;color:#2563eb;"></div>
+                        <button onclick="showPersonalizedTips()" class="btn btn-secondary" style="margin-top:1em;">Show Tips</button>
+                    </div>
+                </div>
+                <!-- Step 3: FAQ Search -->
+                <div class="step-card">
+                    <div class="step-icon-wrapper purple">
+                        <svg class="step-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#f3e8ff"/><path d="M8 12h.01M12 12h.01M16 12h.01" stroke="#9333ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">Real-time FAQ Search</h3>
+                        <input type="text" id="guideFaqSearchInput" placeholder="Type your question..." oninput="handleGuideFaqSearch()" style="width:100%;padding:0.7em;border-radius:6px;border:1px solid #d1d5db;">
+                        <div id="guideFaqSearchResults" style="margin-top:1em;"></div>
+                    </div>
+                </div>
+                <!-- Step 4: User Stories -->
+                <div class="step-card">
+                    <div class="step-icon-wrapper orange">
+                        <svg class="step-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#fed7aa"/><path d="M13 16h-1v-4h-1m1-4h.01" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">User Stories</h3>
+                        <div class="user-stories-list" style="display:flex;flex-direction:column;gap:1em;">
+                            <div class="user-story-card" style="background:#e0f2fe;padding:1em;border-radius:8px;">
+                                <strong>Priya (Delhi):</strong> "I followed the DBT seeding steps and received my scholarship on time! The tracker helped me stay organized."
+                            </div>
+                            <div class="user-story-card" style="background:#fef9c3;padding:1em;border-radius:8px;">
+                                <strong>Rahul (Mumbai):</strong> "The simulator made it easy to understand my DBT status. Highly recommended for students!"
+                            </div>
+                            <div class="user-story-card" style="background:#f3e8ff;padding:1em;border-radius:8px;">
+                                <strong>Anjali (Kolkata):</strong> "I used the FAQ search to solve my doubts instantly. Great resource!"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 5: Interactive Quiz -->
+                <div class="step-card">
+                    <div class="step-icon-wrapper blue">
+                        <svg class="step-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#dbeafe"/><path d="M8 12l2 2 4-4" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">DBT/Aadhaar Quiz</h3>
+                        <form id="guideQuizForm" onsubmit="handleGuideQuizSubmit(event)" style="background:#f0fdfa;padding:1em;border-radius:8px;">
+                            <div class="quiz-question">
+                                <label>1. What is DBT seeding?</label><br>
+                                <select id="guideQuizQ1" required><option value="">Select</option><option value="a">Linking Aadhaar to bank for KYC</option><option value="b">Making account eligible for government payments</option><option value="c">Opening a new account</option></select>
+                            </div>
+                            <div class="quiz-question" style="margin-top:1em;">
+                                <label>2. Where can you check DBT status?</label><br>
+                                <select id="guideQuizQ2" required><option value="">Select</option><option value="a">Bank branch</option><option value="b">UIDAI portal</option><option value="c">Both a and b</option></select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full" style="margin-top:1em;">Submit Quiz</button>
+                        </form>
+                        <div id="guideQuizResult" style="margin-top:1em;"></div>
+                    </div>
+                </div>
+                <!-- Step 6: Document Upload Demo -->
+                <div class="step-card">
+                    <div class="step-icon-wrapper green">
+                        <svg class="step-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#dcfce7"/><path d="M12 8v4l3 3" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">Document Upload Demo</h3>
+                        <form id="guideDocUploadForm" onsubmit="handleGuideDocUpload(event)" style="background:#f0fdfa;padding:1em;border-radius:8px;">
+                            <label for="guideDocFile">Upload a sample document (demo only):</label><br>
+                            <input type="file" id="guideDocFile" accept=".pdf,.jpg,.png" required style="margin-top:1em;">
+                            <button type="submit" class="btn btn-primary btn-full" style="margin-top:1em;">Upload</button>
+                        </form>
+                        <div id="guideDocUploadResult" style="margin-top:1em;"></div>
+                    </div>
+                </div>
+                <!-- Step 7: Push Notification Demo -->
+                <div class="step-card">
+                    <div class="step-icon-wrapper purple">
+                        <svg class="step-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#f3e8ff"/><path d="M8 12h.01M12 12h.01M16 12h.01" stroke="#9333ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="step-content">
+                        <h3 class="step-title">Get Reminders</h3>
+                        <button onclick="showGuidePushNotification()" class="btn btn-secondary">Show DBT Reminder</button>
+                        <div id="guidePushNotificationDemo" style="display:none;background:#2563eb;color:#fff;padding:1em 2em;border-radius:8px;box-shadow:0 4px 16px #2563eb44;margin-top:1em;">
+                            <span id="guidePushNotificationText">DBT deadline reminder: Check your status today!</span>
+                            <button onclick="closeGuidePushNotification()" style="margin-left:2em;background:#fff;color:#2563eb;border:none;padding:0.3em 1em;border-radius:6px;">Dismiss</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                <button onclick="showPage('guide')" class="btn btn-primary">
+                    Learn How to Enable Seeding
+                    <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Tracker Section -->
+    <div id="progressTrackerPage" class="page">
+        <div class="container page-container-narrow">
+            <h1 class="page-title">DBT Seeding Progress Tracker</h1>
+            <div class="progress-steps" style="display:flex;flex-direction:column;gap:1.5em;">
+                <div class="progress-step"><input type="checkbox" id="step1" onchange="updateProgress()"> <label for="step1">Visit your bank branch</label></div>
+                <div class="progress-step"><input type="checkbox" id="step2" onchange="updateProgress()"> <label for="step2">Request DBT/Aadhaar seeding</label></div>
+                <div class="progress-step"><input type="checkbox" id="step3" onchange="updateProgress()"> <label for="step3">Submit required documents</label></div>
+                <div class="progress-step"><input type="checkbox" id="step4" onchange="updateProgress()"> <label for="step4">Receive confirmation SMS/email</label></div>
+                <div class="progress-step"><input type="checkbox" id="step5" onchange="updateProgress()"> <label for="step5">Check DBT status online</label></div>
+            </div>
+            <div id="progressSummary" style="margin-top:2em;font-weight:500;color:#2563eb;"></div>
+        </div>
+    </div>
+    <div id="guidePage" class="page">
+        <div class="container page-container-narrow">
+            <h1 class="page-title" data-i18n="guide.title">Step-by-Step Seeding Guide</h1>
+            
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-icon-wrapper blue">
+                        <svg class="step-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-header">
+                            <span class="step-number blue">1</span>
+                            <h3 class="step-title" data-i18n="guide.step1">Visit Your Bank Branch</h3>
+                        </div>
+                        <p class="step-desc" data-i18n="guide.step1Desc">Go to your bank with Aadhaar card and passbook</p>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon-wrapper green">
+                        <svg class="step-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-header">
+                            <span class="step-number green">2</span>
+                            <h3 class="step-title" data-i18n="guide.step2">Request DBT Seeding</h3>
+                        </div>
+                        <p class="step-desc" data-i18n="guide.step2Desc">Ask specifically for 'Aadhaar seeding for DBT'</p>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon-wrapper purple">
+                        <svg class="step-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-header">
+                            <span class="step-number purple">3</span>
+                            <h3 class="step-title" data-i18n="guide.step3">Get Confirmation</h3>
+                        </div>
+                        <p class="step-desc" data-i18n="guide.step3Desc">Ensure you receive written confirmation</p>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon-wrapper orange">
+                        <svg class="step-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-header">
+                            <span class="step-number orange">4</span>
+                            <h3 class="step-title" data-i18n="guide.step4">Verify Status</h3>
+                        </div>
+                        <p class="step-desc" data-i18n="guide.step4Desc">Check your DBT status using our tool</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Check Page -->
+    <div id="checkPage" class="page">
+        <div class="container page-container-narrow">
+            <h1 class="page-title" style="color:#0e7490;display:flex;align-items:center;gap:0.5em;">
+                <svg style="width:2em;height:2em;vertical-align:middle;margin-right:0.3em;" fill="#0e7490" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" fill="#e0f2fe"/>
+                    <path d="M8 12h8M12 8v8" stroke="#0e7490" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                DBT Status Explorer
+            </h1>
+            <div class="alert-box" style="margin-bottom:1.5em;background:#f0fdfa;border-left:4px solid #0e7490;">
+                <svg style="width:1.2em;height:1.2em;vertical-align:middle;margin-right:0.3em;" fill="#0e7490" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" fill="#e0f2fe"/>
+                    <path d="M12 8v4l3 3" stroke="#0e7490" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span style="color:#0e7490;font-weight:500;">Welcome!</span> Curious about your DBT status? Try our interactive demo below. <br>
+                <span style="color:#64748b;">This is a safe, simulated experience—no real data is used or stored.</span>
+            </div>
+            <div class="container page-container-narrow" style="margin-top:2.5em;">
+                <h2 style="color:#0e7490;display:flex;align-items:center;gap:0.5em;">
+                    <svg style="width:1.5em;height:1.5em;vertical-align:middle;margin-right:0.3em;" fill="#0e7490" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" fill="#e0f2fe"/>
+                        <path d="M8 12h8M12 8v8" stroke="#0e7490" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Step-by-Step DBT Status Simulator
+                </h2>
+                <div style="margin-bottom:1.5em;color:#334155;font-size:1.05em;">
+                    Practice how to check your DBT scholarship status safely. No sensitive data required!
+                </div>
+                <form id="dbtSimulatorForm" class="simulator-form" onsubmit="handleDbtSimulator(event)" style="background:#f0fdfa;padding:1.5em;border-radius:8px;box-shadow:0 2px 8px #e0e7ef33;">
+                    <div class="form-group">
+                        <label for="simBank" style="color:#0e7490;font-weight:500;">Bank Name</label>
+                        <select id="simBank" class="form-input" required style="border:1px solid #0e7490;">
+                            <option value="">Select your bank</option>
+                            <option value="SBI">State Bank of India (SBI)</option>
+                            <option value="PNB">Punjab National Bank (PNB)</option>
+                            <option value="BOB">Bank of Baroda (BOB)</option>
+                            <option value="HDFC">HDFC Bank</option>
+                            <option value="ICICI">ICICI Bank</option>
+                            <option value="AXIS">Axis Bank</option>
+                            <option value="CBI">Central Bank of India</option>
+                            <option value="UBI">Union Bank of India</option>
+                            <option value="IDBI">IDBI Bank</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="simAadhaar" style="color:#0e7490;font-weight:500;">Aadhaar Number (Last 4 digits only)</label>
+                        <input type="text" id="simAadhaar" class="form-input" maxlength="4" pattern="[0-9]{4}" required placeholder="e.g. 5678" style="border:1px solid #0e7490;" />
+                        <span style="font-size:0.85em;color:#64748b;">For demo only. Do not enter full Aadhaar.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="simLinked" style="color:#0e7490;font-weight:500;">Have you submitted Aadhaar at your bank?</label>
+                        <select id="simLinked" class="form-input" required style="border:1px solid #0e7490;">
+                            <option value="">Select</option>
+                            <option value="yes">Yes, submitted</option>
+                            <option value="no">No, not submitted</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" style="margin-top:0.5em;background:#0e7490;border:none;">
+                        <svg style="width:1.2em;height:1.2em;vertical-align:middle;margin-right:0.3em;" fill="#e0f2fe" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" fill="#e0f2fe"/>
+                            <path d="M13 7l5 5m0 0l-5 5m5-5H6" stroke="#0e7490" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Simulate Status
+                    </button>
+                </form>
+                <div id="simulatorResult" style="margin-top:2em;"></div>
+                <div id="personalizedTips" style="margin-top:2em;font-size:1.05em;color:#2563eb;"></div>
+            <div class="faq-search-section" style="margin-top:2.5em;">
+                <h3 style="color:#0e7490;">Real-time FAQ Search</h3>
+                <input type="text" id="faqSearchInput" placeholder="Type your question..." oninput="handleFaqSearch()" style="width:100%;padding:0.7em;border-radius:6px;border:1px solid #d1d5db;">
+                <div id="faqSearchResults" style="margin-top:1em;"></div>
+            </div>
+    <!-- User Stories Section -->
+    <div id="userStoriesPage" class="page">
+        <div class="container page-container-narrow">
+            <h1 class="page-title">User Stories</h1>
+            <div class="user-stories-list" style="display:flex;flex-direction:column;gap:2em;">
+                <div class="user-story-card" style="background:#e0f2fe;padding:1.5em;border-radius:8px;">
+                    <strong>Priya (Delhi):</strong> "I followed the DBT seeding steps and received my scholarship on time! The tracker helped me stay organized."
+                </div>
+                <div class="user-story-card" style="background:#fef9c3;padding:1.5em;border-radius:8px;">
+                    <strong>Rahul (Mumbai):</strong> "The simulator made it easy to understand my DBT status. Highly recommended for students!"
+                </div>
+                <div class="user-story-card" style="background:#f3e8ff;padding:1.5em;border-radius:8px;">
+                    <strong>Anjali (Kolkata):</strong> "I used the FAQ search to solve my doubts instantly. Great resource!"
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Interactive Quiz Section -->
+    <div id="quizPage" class="page">
+        <div class="container page-container-narrow">
+            <h1 class="page-title">DBT/Aadhaar Quiz</h1>
+            <form id="quizForm" onsubmit="handleQuizSubmit(event)" style="background:#f0fdfa;padding:1.5em;border-radius:8px;">
+                <div class="quiz-question">
+                    <label>1. What is DBT seeding?</label><br>
+                    <select id="quizQ1" required><option value="">Select</option><option value="a">Linking Aadhaar to bank for KYC</option><option value="b">Making account eligible for government payments</option><option value="c">Opening a new account</option></select>
+                </div>
+                <div class="quiz-question" style="margin-top:1em;">
+                    <label>2. Where can you check DBT status?</label><br>
+                    <select id="quizQ2" required><option value="">Select</option><option value="a">Bank branch</option><option value="b">UIDAI portal</option><option value="c">Both a and b</option></select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" style="margin-top:1.5em;">Submit Quiz</button>
+            </form>
+            <div id="quizResult" style="margin-top:2em;"></div>
+        </div>
+    </div>
+    <!-- Document Upload Demo Section -->
+    <div id="docUploadPage" class="page">
+        <div class="container page-container-narrow">
+            <h1 class="page-title">Document Upload Demo</h1>
+            <form id="docUploadForm" onsubmit="handleDocUpload(event)" style="background:#f0fdfa;padding:1.5em;border-radius:8px;">
+                <label for="docFile">Upload a sample document (demo only):</label><br>
+                <input type="file" id="docFile" accept=".pdf,.jpg,.png" required style="margin-top:1em;">
+                <button type="submit" class="btn btn-primary btn-full" style="margin-top:1.5em;">Upload</button>
+            </form>
+            <div id="docUploadResult" style="margin-top:2em;"></div>
+        </div>
+    </div>
+    <!-- Push Notification Demo -->
+    <div id="pushNotificationDemo" style="position:fixed;bottom:24px;left:24px;z-index:9999;display:none;background:#2563eb;color:#fff;padding:1em 2em;border-radius:8px;box-shadow:0 4px 16px #2563eb44;">
+        <span id="pushNotificationText">DBT deadline reminder: Check your status today!</span>
+        <button onclick="closePushNotification()" style="margin-left:2em;background:#fff;color:#2563eb;border:none;padding:0.3em 1em;border-radius:6px;">Dismiss</button>
+    </div>
+            </div>
+            <div style="margin-bottom:1.5em;">
+                <span style="font-size:1.08em;color:#0e7490;font-weight:500;">How does it work?</span>
+                <ul style="margin:0.5em 0 0 1.5em;color:#334155;font-size:0.98em;">
+                    <li>Type your <strong>Bank Account Number</strong> (any digits, just for demo).</li>
+                    <li>Type the <strong>Last 4 digits of your Aadhaar</strong> (any 4 digits).</li>
+                    <li>Hit <strong>See My Status</strong> and view a sample result instantly!</li>
+                </ul>
+            </div>
+            <form id="dbtCheckForm" class="check-form" onsubmit="handleDbtCheck(event)">
+                <div class="form-group">
+                    <label class="form-label" style="color:#0e7490;font-weight:500;">
+                        <svg style="width:1em;height:1em;vertical-align:middle;margin-right:0.3em;" fill="#0e7490" viewBox="0 0 24 24">
+                            <rect x="4" y="7" width="16" height="10" rx="2" fill="#e0f2fe" stroke="#0e7490" stroke-width="2"/>
+                            <path d="M4 7l8 5 8-5" stroke="#0e7490" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Your Bank Account Number
+                    </label>
+                    <input 
+                        type="text"
+                        id="accountNumber"
+                        placeholder="e.g. 123456789012"
+                        class="form-input"
+                        maxlength="16"
+                        required
+                        pattern="[0-9]{6,16}"
+                        title="Enter 6-16 digit account number"
+                        style="border:1px solid #0e7490;"
+                    />
+                    <span style="font-size:0.85em;color:#64748b;">Any 6-16 digits (demo only)</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" style="color:#0e7490;font-weight:500;">
+                        <svg style="width:1em;height:1em;vertical-align:middle;margin-right:0.3em;" fill="#0e7490" viewBox="0 0 24 24">
+                            <rect x="6" y="6" width="12" height="12" rx="3" fill="#e0f2fe" stroke="#0e7490" stroke-width="2"/>
+                            <text x="12" y="16" text-anchor="middle" fill="#0e7490" font-size="8" font-family="Arial">UID</text>
+                        </svg>
+                        Last 4 digits of Aadhaar
+                    </label>
+                    <input 
+                        type="text"
+                        id="aadhaarLast4"
+                        placeholder="e.g. 1234"
+                        class="form-input"
+                        maxlength="4"
+                        pattern="[0-9]{4}"
+                        required
+                        title="Enter last 4 digits of Aadhaar"
+                        style="border:1px solid #0e7490;"
+                    />
+                    <span style="font-size:0.85em;color:#64748b;">Any 4 digits (demo only)</span>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full" style="margin-top:0.5em;background:#0e7490;border:none;">
+                    <svg style="width:1.2em;height:1.2em;vertical-align:middle;margin-right:0.3em;" fill="#e0f2fe" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" fill="#e0f2fe"/>
+                        <path d="M13 7l5 5m0 0l-5 5m5-5H6" stroke="#0e7490" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    See My Status
+                </button>
+            </form>
+            <div id="checkResult" class="hidden"></div>
+                <div id="dbtLoading" class="hidden" style="text-align:center;margin:1.5em 0;">
+                    <svg style="width:2.5em;height:2.5em;animation:spin 1s linear infinite;" viewBox="0 0 50 50">
+                        <circle cx="25" cy="25" r="20" fill="none" stroke="#0e7490" stroke-width="5" stroke-dasharray="31.4 31.4"/>
+                    </svg>
+                    <div style="margin-top:0.5em;color:#0e7490;font-weight:500;">Checking DBT status...</div>
+                </div>
+                <style>
+                    @keyframes spin { 100% { transform: rotate(360deg); } }
+                </style>
+            <div style="margin-top:1.5rem; text-align:center;">
+                <a href="https://myaadhaar.uidai.gov.in/bank-seeding-status" target="_blank" rel="noopener" class="btn btn-secondary btn-full" style="margin-top:0.5rem;background:#e0f2fe;color:#0e7490;border:none;">
+                    <svg style="width:1.1em;height:1.1em;vertical-align:middle;margin-right:0.3em;" fill="#0e7490" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" fill="#e0f2fe"/>
+                        <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v0.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5" stroke="#0e7490" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Visit Official UIDAI Bank Seeding Status
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Page -->
+    <!-- Video Resources Page -->
+    <div id="videoPage" class="page">
+    <div class="container page-container">
+            <h1 class="page-title">Video Resources</h1>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h3 class="resource-title">Aadhaar Seeding & DBT Explained</h3>
+                    <div class="video-embed" style="margin-bottom:1rem;">
+                        <iframe width="100%" height="215" src="https://www.youtube.com/embed/gjPkUF23UTg" title="Aadhaar Seeding & DBT Explained" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <p>Comprehensive explanation of Aadhaar seeding and DBT process.</p>
+                </div>
+                <div class="resource-card">
+                    <h3 class="resource-title">DBT Link Kaise Kare | NPCI / Aadhaar Seeding Tutorial</h3>
+                    <div class="video-embed" style="margin-bottom:1rem;">
+                        <iframe width="100%" height="215" src="https://www.youtube.com/embed/S3zKHpMjraU" title="DBT Link Kaise Kare" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <p>Step-by-step tutorial for DBT linking and Aadhaar seeding.</p>
+                </div>
+                <div class="resource-card">
+                    <h3 class="resource-title">How to Check DBT Linking Status Online</h3>
+                    <div class="video-embed" style="margin-bottom:1rem;">
+                        <iframe width="100%" height="215" src="https://www.youtube.com/embed/hXcbfXR4Oj4" title="Check DBT Linking Status" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <p>Guide to checking your DBT linking status online.</p>
+                </div>
+                <div class="resource-card">
+                    <h3 class="resource-title">Aadhar Bank Account Seeding Online</h3>
+                    <div class="video-embed" style="margin-bottom:1rem;">
+                        <iframe width="100%" height="215" src="https://www.youtube.com/embed/V64Ron0EdSs" title="Aadhar Bank Account Seeding Online" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <p>How to seed your Aadhaar with your bank account online.</p>
+                </div>
+                <div class="resource-card">
+                    <h3 class="resource-title">India’s DBT System: Transforming Welfare Delivery</h3>
+                    <div class="video-embed" style="margin-bottom:1rem;">
+                        <iframe width="100%" height="215" src="https://www.youtube.com/embed/qvb1_VTr3dk" title="India’s DBT System" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <p>Overview of India's DBT system and its impact on welfare delivery.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="resourcesPage" class="page">
+        <div class="container page-container">
+            <h1 class="page-title" data-i18n="resources.title">Download Resources</h1>
+            
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <svg class="resource-icon blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <h3 class="resource-title" data-i18n="resources.infographics">Infographics & Posters</h3>
+                    <div class="resource-list">
+                        <a href="https://acrobat.adobe.com/id/urn:aaid:sc:AP:7cdbf693-f740-43a9-87a8-0b1e112c5372" target="_blank" class="resource-item" style="display:block; text-align:left; text-decoration:none;">
+                            Additional FAQ & Troubleshooting Guide<br>
+                            <span style="font-size:0.9em; color:#6b7280;">Extra FAQs and troubleshooting information</span>
+                        </a>
+                        <div style="font-weight:600; font-size:1.05em; margin-bottom:0.5em;">📊 Official Data & Infographic Sources</div>
+                        <a href="https://dbtbharat.gov.in" target="_blank" class="resource-item" style="display:block; text-align:left; text-decoration:none;">
+                            DBT Bharat Portal (Govt. of India)<br>
+                            <span style="font-size:0.9em; color:#6b7280;">Official stats, visuals & scheme details</span>
+                        </a>
+                        <a href="https://scholarships.gov.in" target="_blank" class="resource-item" style="display:block; text-align:left; text-decoration:none;">
+                            National Scholarship Portal (NSP)<br>
+                            <span style="font-size:0.9em; color:#6b7280;">Dashboard with data, charts & awareness material</span>
+                        </a>
+                        <a href="https://data.gov.in/dataset-group-name/Direct%20Benefit%20Transfer" target="_blank" class="resource-item" style="display:block; text-align:left; text-decoration:none;">
+                            Open Government Data (DBT Datasets & Visuals)<br>
+                            <span style="font-size:0.9em; color:#6b7280;">Scheme-wise DBT data for making posters/infographics</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <svg class="resource-icon green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    <h3 class="resource-title" data-i18n="resources.videos">Video Guides</h3>
+                    <div class="resource-list">
+                        <a href="https://youtu.be/ZPvBNUbcwOI?si=Pi_uxFgtb7C8B-Q2" target="_blank" rel="noopener" class="resource-item" style="display:block; text-align:left; text-decoration:none;">
+                            Introduction Video<br>
+                            <span style="font-size:0.9em; color:#6b7280;">Video introduction to DBT and Aadhaar</span>
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=S3zKHpMjraU" target="_blank" class="resource-item" style="display:block; text-align:left; text-decoration:none;">
+                            Bank Visit Guide<br>
+                            <span style="font-size:0.9em; color:#6b7280;">How to seed Aadhaar at your bank</span>
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=hXcbfXR4Oj4" target="_blank" class="resource-item" style="display:block; text-align:left; text-decoration:none;">
+                            Common Mistakes<br>
+                            <span style="font-size:0.9em; color:#6b7280;">Tips to avoid errors in DBT/Aadhaar process</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <svg class="resource-icon purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                    <h3 class="resource-title" data-i18n="resources.faqs">FAQs & Documentation</h3>
+                    <div class="resource-list">
+                        <a href="https://acrobat.adobe.com/id/urn:aaid:sc:AP:8ebdcec4-14d0-4f02-a84d-64346407beef" target="_blank" class="resource-item" style="display:block; text-align:left; text-decoration:none;">
+                            Complete FAQ, Bank List & Troubleshooting Guide<br>
+                            <span style="font-size:0.9em; color:#6b7280;">All FAQs, bank contacts, and troubleshooting in one document</span>
+                        </a>
+                        <a href="https://acrobat.adobe.com/id/urn:aaid:sc:AP:7cdbf693-f740-43a9-87a8-0b1e112c5372" target="_blank" class="resource-item" style="display:block; text-align:left; text-decoration:none;">
+                            Additional FAQ & Troubleshooting Guide<br>
+                            <span style="font-size:0.9em; color:#6b7280;">Extra FAQs and troubleshooting information</span>
+                        </a>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Page -->
+    <div id="adminPage" class="page">
+        <div class="container page-container">
+            <h1 class="page-title" data-i18n="admin.title">Admin Dashboard</h1>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <svg class="stat-icon blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    <span class="stat-number">1,247</span>
+                    <p class="stat-label">Total Chat Queries</p>
+                </div>
+
+                <div class="stat-card">
+                    <svg class="stat-icon green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="stat-number">856</span>
+                    <p class="stat-label">DBT Status Checks</p>
+                </div>
+
+                <div class="stat-card">
+                    <svg class="stat-icon purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span class="stat-number">12</span>
+                    <p class="stat-label">Available Resources</p>
+                </div>
+
+                <div class="stat-card">
+                    <svg class="stat-icon orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <span class="stat-number">423</span>
+                    <p class="stat-label">Active Users Today</p>
+                </div>
+            </div>
+
+            <div class="queries-card">
+                <h2 class="queries-title">Top Queries (Last 7 Days)</h2>
+                <div class="queries-list">
+                    <div class="query-item">
+                        <span class="query-text">How to enable DBT seeding?</span>
+                        <span class="query-count">234</span>
+                    </div>
+                    <div class="query-item">
+                        <span class="query-text">What's the difference between linking and seeding?</span>
+                        <span class="query-count">187</span>
+                    </div>
+                    <div class="query-item">
+                        <span class="query-text">Which bank do I need to visit?</span>
+                        <span class="query-count">156</span>
+                    </div>
+                    <div class="query-item">
+                        <span class="query-text">How long does seeding take?</span>
+                        <span class="query-count">143</span>
+                    </div>
+                    <div class="query-item">
+                        <span class="query-text">My scholarship was rejected, what to do?</span>
+                        <span class="query-count">98</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Widget -->
+    <div class="chat-widget" id="chatWidget">
+        <div id="chatWindow" class="chat-window hidden">
+            <div class="chat-header">
+                <div class="chat-header-content">
+                    <svg class="chat-header-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                    <div>
+                        <h3 class="chat-header-title" data-i18n="chat.title">Confusion Hunter Assistant</h3>
+                        <p class="chat-header-subtitle">Always here to help</p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="chat-close-btn">
+                    <svg class="close-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div id="chatMessages" class="chat-messages"></div>
+
+            <div class="chat-input-container">
+                <input 
+                    type="text"
+                    id="chatInput"
+                    placeholder="Ask me about Aadhaar and DBT..."
+                    class="chat-input"
+                    onkeypress="handleChatKeypress(event)"
+                />
+                <button onclick="sendChatMessage()" class="chat-send-btn">
+                    <svg class="send-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <button id="chatToggleBtn" onclick="toggleChat()" class="chat-toggle-btn">
+            <svg class="chat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-text">© 2025 Confusion Hunter - Aadhaar DBT Education Platform</p>
+            <p class="footer-subtext">Empowering students with clarity on DBT processes</p>
+            <div class="footer-links">
+                <button onclick="toggleAdmin()" class="footer-link" id="adminToggle">
+                    Admin Login
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+    <style>
+        body .magic-bg {
+            background: linear-gradient(135deg, #a5b4fc 0%, #38bdf8 100%);
+            min-height: 100vh;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .magic-card {
+            background: rgba(255,255,255,0.85);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px #38bdf866, 0 1.5px 8px #a5b4fc44;
+            padding: 2.5em 2em 2em 2em;
+            margin-bottom: 2em;
+            position: relative;
+        }
+        .magic-glow {
+            color: #2563eb;
+            font-weight: 700;
+            text-shadow: 0 0 12px #38bdf8, 0 0 24px #a5b4fc;
+            font-size: 1.35em;
+        }
+        .magic-form-group label {
+            color: #6366f1;
+            font-weight: 600;
+            text-shadow: 0 0 6px #a5b4fc88;
+        }
+        .magic-btn-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 0 8px #38bdf8;
+        }
+        #simulatorResult {
+            animation: magicFadeIn 1.2s cubic-bezier(.4,0,.2,1);
+        }
+        @keyframes magicFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .magic-sparkles {
+            position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;
+        }
+        .magic-sparkles:before, .magic-sparkles:after {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg width="120" height="120" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="2" fill="%23fff" opacity="0.7"/><circle cx="80" cy="40" r="1.5" fill="%23fff" opacity="0.5"/><circle cx="60" cy="100" r="2.5" fill="%23fff" opacity="0.6"/><circle cx="100" cy="80" r="1.2" fill="%23fff" opacity="0.4"/></svg>');
+            animation: sparkleMove 8s linear infinite;
+        }
+        .magic-sparkles:after {
+            animation-delay: 4s;
+        }
+        @keyframes sparkleMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 120px 120px; }
+        }
+    </style>
+    <style>
+        body .magic-bg {
+            background: linear-gradient(135deg, #a5b4fc 0%, #38bdf8 100%);
+            min-height: 100vh;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .magic-card {
+            background: rgba(255,255,255,0.85);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px #38bdf866, 0 1.5px 8px #a5b4fc44;
+            padding: 2.5em 2em 2em 2em;
+            margin-bottom: 2em;
+            position: relative;
+        }
+        .magic-glow {
+            color: #2563eb;
+            font-weight: 700;
+            text-shadow: 0 0 12px #38bdf8, 0 0 24px #a5b4fc;
+            font-size: 1.35em;
+        }
+        .magic-form-group label {
+            color: #6366f1;
+            font-weight: 600;
+            text-shadow: 0 0 6px #a5b4fc88;
+        }
+        .magic-btn-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 0 8px #38bdf8;
+        }
+        #simulatorResult {
+            animation: magicFadeIn 1.2s cubic-bezier(.4,0,.2,1);
+        }
+        @keyframes magicFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .magic-sparkles {
+            position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;
+        }
+        .magic-sparkles:before, .magic-sparkles:after {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg width="120" height="120" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="2" fill="%23fff" opacity="0.7"/><circle cx="80" cy="40" r="1.5" fill="%23fff" opacity="0.5"/><circle cx="60" cy="100" r="2.5" fill="%23fff" opacity="0.6"/><circle cx="100" cy="80" r="1.2" fill="%23fff" opacity="0.4"/></svg>');
+            animation: sparkleMove 8s linear infinite;
+        }
+        .magic-sparkles:after {
+            animation-delay: 4s;
+        }
+        @keyframes sparkleMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 120px 120px; }
+        }
+    </style>
+</html>
